@@ -23,7 +23,7 @@ const QuoteUpdateType = new GraphQLInputObjectType({
   name: 'QuoteUpdateType',
   type: QuoteType,
   fields: {
-    id: {type: new GraphQLNonNull(GraphQLString)},
+    id: { type: new GraphQLNonNull(GraphQLString) },
     quote: { type: new GraphQLNonNull(GraphQLString) }
   }
 });
@@ -32,7 +32,7 @@ const QuoteDeleteType = new GraphQLInputObjectType({
   name: 'QuoteDeleteType',
   type: QuoteType,
   fields: {
-    id: {type: new GraphQLNonNull(GraphQLString)}
+    id: { type: new GraphQLNonNull(GraphQLString) }
   }
 });
 
@@ -83,11 +83,11 @@ const ChuckNorrisMutationType = new GraphQLObjectType({
     deleteQuote: {
       type: QuoteType,
       args: {
-        quote: {type: new GraphQLNonNull(QuoteDeleteType)}
+        quote: { type: new GraphQLNonNull(QuoteDeleteType) }
       },
       resolve: (source, {quote}) => {
         let value = _.remove(Quotes, q => q.id == quote.id)
-        return quote;
+        return value;
       }
     }
   }
