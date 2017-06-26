@@ -54,40 +54,41 @@ const ChuckNorrisMutationType = new GraphQLObjectType({
     createQuote: {
       type: QuoteType,
       args: {
-        quote: { type: new GraphQLNonNull(QuoteCreateType) }
+        input: { type: new GraphQLNonNull(QuoteCreateType) }
       },
-      resolve: (source, { quote }) => {
-        quote.id = uuidv4();
-        quote.quote = quote.quote;
+      resolve: (source, { input }) => {
+        let quoteData = [];
+        quoteData.id = uuidv4();
+        quoteData.quote = input.quote;
 
-        Quotes.push(quote);
-        return quote;
+        Quotes.push(quoteData);
+        return quoteData;
       }
     },
     updateQuote: {
       type: QuoteType,
       args: {
-        quote: { type: new GraphQLNonNull(QuoteUpdateType) }
+        input: { type: new GraphQLNonNull(QuoteUpdateType) }
       },
-      resolve: (source, {quote}) => {
+      resolve: (source, {input}) => {
         let quoteData = [];
-        quoteData.id = quote.id;
-        quoteData.quote = quote.quote;
+        quoteData.id = input.id;
+        quoteData.quote = input.quote;
 
-        let index = Quotes.indexOf(quote.id);
-        let updateQuote = Quotes.splice(index, 1, quoteData);
+        let index = Quotes.findIndex(q => q.id == input.id);
+        let update = Quotes.splice(index, 1, quoteData);
 
-        return quote;
+        return quoteData; 
       }
     },
     deleteQuote: {
       type: QuoteType,
       args: {
-        quote: { type: new GraphQLNonNull(QuoteDeleteType) }
+        input: { type: new GraphQLNonNull(QuoteDeleteType) }
       },
-      resolve: (source, {quote}) => {
-        let value = _.remove(Quotes, q => q.id == quote.id)
-        return value;
+      resolve: (source, {input}) => {
+        let deleteQuote = _.remove(Quotes, q => q.id == input.id)
+        return input;
       }
     }
   }
